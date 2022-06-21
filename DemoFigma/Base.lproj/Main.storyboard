@@ -17,16 +17,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DBP-Rz-Axe">
-                                <rect key="frame" x="0.0" y="94" width="428" height="798"/>
-                                <connections>
-                                    <segue destination="6WH-lc-XuN" kind="embed" id="Klo-l0-Pk6"/>
-                                </connections>
-                            </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mEV-YN-Prr">
                                 <rect key="frame" x="0.0" y="94" width="428" height="798"/>
                                 <connections>
                                     <segue destination="Z7X-JL-60c" kind="embed" id="aTL-ON-fBF"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DBP-Rz-Axe">
+                                <rect key="frame" x="0.0" y="94" width="428" height="798"/>
+                                <connections>
+                                    <segue destination="6WH-lc-XuN" kind="embed" id="Klo-l0-Pk6"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -266,7 +266,7 @@
         <!--Navigation Controller-->
         <scene sceneID="QWu-9m-tD1">
             <objects>
-                <navigationController storyboardIdentifier="navi" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="o6V-rC-moz" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="o6V-rC-moz" sceneMemberID="viewController">
                     <toolbarItems/>
                     <nil key="simulatedTopBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="iMO-dL-p8K">
@@ -436,7 +436,7 @@
                                     <action selector="didTapCancel:" destination="Pgj-gS-vmW" eventType="touchUpInside" id="6fS-Vh-P50"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="City" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4e4-mY-jd9">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="City" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="4e4-mY-jd9">
                                 <rect key="frame" x="90" y="114" width="240" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="vyN-px-2t7"/>
@@ -444,46 +444,37 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0D0-Sb-Wst">
+                                <rect key="frame" x="30" y="164" width="388" height="698"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="O9U-jF-04c"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="O9U-jF-04c" firstAttribute="trailing" secondItem="0D0-Sb-Wst" secondAttribute="trailing" constant="10" id="27E-cs-5Sq"/>
+                            <constraint firstItem="O9U-jF-04c" firstAttribute="bottom" secondItem="0D0-Sb-Wst" secondAttribute="bottom" constant="30" id="BT6-Ny-7zC"/>
                             <constraint firstItem="27M-U0-ul2" firstAttribute="leading" secondItem="4e4-mY-jd9" secondAttribute="trailing" constant="10" id="LZu-QJ-uLI"/>
                             <constraint firstItem="O9U-jF-04c" firstAttribute="trailing" secondItem="27M-U0-ul2" secondAttribute="trailing" constant="40" id="PRj-vr-34O"/>
                             <constraint firstItem="18A-dQ-bH2" firstAttribute="leading" secondItem="O9U-jF-04c" secondAttribute="leading" constant="30" id="Uoc-dm-p7U"/>
+                            <constraint firstItem="0D0-Sb-Wst" firstAttribute="top" secondItem="4e4-mY-jd9" secondAttribute="bottom" constant="10" id="XbT-S9-Wew"/>
                             <constraint firstItem="ZF2-4E-0vw" firstAttribute="top" secondItem="O9U-jF-04c" secondAttribute="top" id="g4G-5O-AHQ"/>
                             <constraint firstItem="ZF2-4E-0vw" firstAttribute="centerX" secondItem="0aJ-00-Bhz" secondAttribute="centerX" id="jbx-dn-fFZ"/>
                             <constraint firstItem="4e4-mY-jd9" firstAttribute="leading" secondItem="18A-dQ-bH2" secondAttribute="trailing" constant="20" id="jeK-kP-YJs"/>
                             <constraint firstItem="18A-dQ-bH2" firstAttribute="top" secondItem="ZF2-4E-0vw" secondAttribute="bottom" constant="40" id="jr8-SD-OmJ"/>
                             <constraint firstItem="27M-U0-ul2" firstAttribute="top" secondItem="ZF2-4E-0vw" secondAttribute="bottom" constant="40" id="ny5-XU-7Fz"/>
                             <constraint firstItem="4e4-mY-jd9" firstAttribute="top" secondItem="ZF2-4E-0vw" secondAttribute="bottom" constant="40" id="sab-lK-lKx"/>
+                            <constraint firstItem="0D0-Sb-Wst" firstAttribute="leading" secondItem="O9U-jF-04c" secondAttribute="leading" constant="30" id="vXm-f0-IWV"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="tbvSuggestion" destination="0D0-Sb-Wst" id="E0o-mC-cEO"/>
                         <outlet property="tfEnter" destination="4e4-mY-jd9" id="91G-fr-Um8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HY0-D5-3o9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="10485.981308411214" y="776.88984881209512"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="4yR-nO-oHI">
-            <objects>
-                <navigationController storyboardIdentifier="navi2" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="sES-PD-4T0" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <nil key="simulatedTopBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="sLL-Ky-hbZ">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="mnj-ib-Q12" kind="relationship" relationship="rootViewController" id="f2w-dJ-avT"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0t1-aP-fjN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="8133.6448598130837" y="776.88984881209512"/>
         </scene>
     </scenes>
     <resources>

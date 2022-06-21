@@ -35,12 +35,17 @@
 		334A1BC3280168DE003FC940 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 334A1BC2280168DE003FC940 /* Assets.xcassets */; };
 		334A1BC6280168DE003FC940 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 334A1BC4280168DE003FC940 /* LaunchScreen.storyboard */; };
 		33648590285644D4004309B0 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3364858F285644D4004309B0 /* CustomSegmentedControl.swift */; };
+		337C45D12860044F008D20C5 /* ManagerLoctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337C45D02860044F008D20C5 /* ManagerLoctions.swift */; };
+		337C45D628601DD2008D20C5 /* SuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337C45D428601DD2008D20C5 /* SuggestionTableViewCell.swift */; };
+		337C45D728601DD2008D20C5 /* SuggestionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 337C45D528601DD2008D20C5 /* SuggestionTableViewCell.xib */; };
 		338F1B752852EA4F0065A851 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338F1B742852EA4F0065A851 /* Utilities.swift */; };
 		338F1B782852EC450065A851 /* Extension+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338F1B772852EC450065A851 /* Extension+String.swift */; };
 		338F1B7C2852F1CF0065A851 /* DescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338F1B7A2852F1CF0065A851 /* DescriptionTableViewCell.swift */; };
 		338F1B7D2852F1CF0065A851 /* DescriptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 338F1B7B2852F1CF0065A851 /* DescriptionTableViewCell.xib */; };
 		338F1B862852FD010065A851 /* CurrentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338F1B842852FD010065A851 /* CurrentTableViewCell.swift */; };
 		338F1B872852FD010065A851 /* CurrentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 338F1B852852FD010065A851 /* CurrentTableViewCell.xib */; };
+		339BEA312859729C002E2FEC /* NameCityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339BEA302859729C002E2FEC /* NameCityModel.swift */; };
+		339BEA362859852B002E2FEC /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339BEA352859852B002E2FEC /* WeatherModel.swift */; };
 		33AB1EB42845AFBF0054A424 /* APIUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB1EB32845AFBF0054A424 /* APIUtilities.swift */; };
 		33D378D6284F0F9C006318E3 /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D378D4284F0F9C006318E3 /* PopoverViewController.swift */; };
 		33D378D7284F0F9C006318E3 /* PopoverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33D378D5284F0F9C006318E3 /* PopoverViewController.xib */; };
@@ -79,12 +84,17 @@
 		334A1BC5280168DE003FC940 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		334A1BC7280168DE003FC940 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3364858F285644D4004309B0 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
+		337C45D02860044F008D20C5 /* ManagerLoctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerLoctions.swift; sourceTree = "<group>"; };
+		337C45D428601DD2008D20C5 /* SuggestionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionTableViewCell.swift; sourceTree = "<group>"; };
+		337C45D528601DD2008D20C5 /* SuggestionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SuggestionTableViewCell.xib; sourceTree = "<group>"; };
 		338F1B742852EA4F0065A851 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		338F1B772852EC450065A851 /* Extension+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+String.swift"; sourceTree = "<group>"; };
 		338F1B7A2852F1CF0065A851 /* DescriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionTableViewCell.swift; sourceTree = "<group>"; };
 		338F1B7B2852F1CF0065A851 /* DescriptionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DescriptionTableViewCell.xib; sourceTree = "<group>"; };
 		338F1B842852FD010065A851 /* CurrentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTableViewCell.swift; sourceTree = "<group>"; };
 		338F1B852852FD010065A851 /* CurrentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrentTableViewCell.xib; sourceTree = "<group>"; };
+		339BEA302859729C002E2FEC /* NameCityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameCityModel.swift; sourceTree = "<group>"; };
+		339BEA352859852B002E2FEC /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		33A56654284700B7001F37E6 /* DemoFigma.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DemoFigma.entitlements; sourceTree = "<group>"; };
 		33AB1EB32845AFBF0054A424 /* APIUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIUtilities.swift; sourceTree = "<group>"; };
 		33D378D4284F0F9C006318E3 /* PopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
@@ -139,6 +149,8 @@
 				331FC5C628507B6F006B93B7 /* LocationModel.swift */,
 				331FC5C928507B7C006B93B7 /* CurrentModel.swift */,
 				331FC5CC28507BAB006B93B7 /* Forecast.swift */,
+				339BEA302859729C002E2FEC /* NameCityModel.swift */,
+				339BEA352859852B002E2FEC /* WeatherModel.swift */,
 			);
 			path = "Model Remote";
 			sourceTree = "<group>";
@@ -219,6 +231,15 @@
 			path = DemoFigma;
 			sourceTree = "<group>";
 		};
+		337C45D328601DBB008D20C5 /* SuggestionCells */ = {
+			isa = PBXGroup;
+			children = (
+				337C45D428601DD2008D20C5 /* SuggestionTableViewCell.swift */,
+				337C45D528601DD2008D20C5 /* SuggestionTableViewCell.xib */,
+			);
+			path = SuggestionCells;
+			sourceTree = "<group>";
+		};
 		338F1B7F2852F1D60065A851 /* DescriptionCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -242,6 +263,7 @@
 			children = (
 				33AB1EB32845AFBF0054A424 /* APIUtilities.swift */,
 				338F1B742852EA4F0065A851 /* Utilities.swift */,
+				337C45D02860044F008D20C5 /* ManagerLoctions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -249,6 +271,7 @@
 		33AA565628486F350008ED18 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				337C45D328601DBB008D20C5 /* SuggestionCells */,
 				33F104E52845C82B008BB03C /* SignInViewController.swift */,
 				33F104EA2845D795008BB03C /* SignUpViewController.swift */,
 				3310F675284A4BBF0077D121 /* TabViewController.swift */,
@@ -390,6 +413,7 @@
 				33D378D7284F0F9C006318E3 /* PopoverViewController.xib in Resources */,
 				3326A0822845F01F00B8BEA1 /* ViewTextFieldTableViewCell.xib in Resources */,
 				338F1B7D2852F1CF0065A851 /* DescriptionTableViewCell.xib in Resources */,
+				337C45D728601DD2008D20C5 /* SuggestionTableViewCell.xib in Resources */,
 				3326A0892845F55E00B8BEA1 /* ViewBtnSubmitTableViewCell.xib in Resources */,
 				3301B5E32856C9AE0074D538 /* ShowLocationTableViewCell.xib in Resources */,
 				334A1BC1280168DD003FC940 /* Main.storyboard in Resources */,
@@ -458,15 +482,19 @@
 				33D378D6284F0F9C006318E3 /* PopoverViewController.swift in Sources */,
 				338F1B752852EA4F0065A851 /* Utilities.swift in Sources */,
 				331FC5D32850A587006B93B7 /* WeatherTableViewCell.swift in Sources */,
+				339BEA362859852B002E2FEC /* WeatherModel.swift in Sources */,
 				33648590285644D4004309B0 /* CustomSegmentedControl.swift in Sources */,
 				331FC5CD28507BAB006B93B7 /* Forecast.swift in Sources */,
 				334A1BBA280168DD003FC940 /* AppDelegate.swift in Sources */,
 				3326A0882845F55E00B8BEA1 /* ViewBtnSubmitTableViewCell.swift in Sources */,
 				3301B5E82856EE9E0074D538 /* InputLocationViewController.swift in Sources */,
+				337C45D12860044F008D20C5 /* ManagerLoctions.swift in Sources */,
+				337C45D628601DD2008D20C5 /* SuggestionTableViewCell.swift in Sources */,
 				334A1BBC280168DD003FC940 /* SceneDelegate.swift in Sources */,
 				330C8C8328544E4100878D08 /* HourCollectionViewCell.swift in Sources */,
 				3310F676284A4BBF0077D121 /* TabViewController.swift in Sources */,
 				338F1B862852FD010065A851 /* CurrentTableViewCell.swift in Sources */,
+				339BEA312859729C002E2FEC /* NameCityModel.swift in Sources */,
 				33F104EB2845D795008BB03C /* SignUpViewController.swift in Sources */,
 				3301B5E22856C9AE0074D538 /* ShowLocationTableViewCell.swift in Sources */,
 				338F1B7C2852F1CF0065A851 /* DescriptionTableViewCell.swift in Sources */,

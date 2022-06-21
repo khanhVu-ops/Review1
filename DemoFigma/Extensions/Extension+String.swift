@@ -12,4 +12,8 @@ extension String {
         let str = self.replacingOccurrences(of: " ", with: "")
         return str
     }
+    func replaceSpacingToCorrectURLForm() -> String {
+        let str = self.replacingOccurrences(of: " ", with: "%20")
+        return str
+    }
 }

@@ -17,20 +17,16 @@ class BaseWeatherViewController: UIViewController {
     @IBOutlet weak var btnTabMenu: UIButton!
     
     let userDefaults = UserDefaults.standard
-
+    
     var currentLocation = CLLocation()
     let locationManager = CLLocationManager()
-    var arrayLoaction = [""]
+    var deviceLoaction: String?
     let active = UserDefaults.standard.value(forKey: "active") as? Int ?? 0
     override func viewDidLoad() {
         super.viewDidLoad()
-        let strings = userDefaults.object(forKey: "myLocation_\(active)") as? [String] ?? []
-        if strings.count == 0 {
-            userDefaults.set(arrayLoaction, forKey: "myLocation_\(active)")
-        }
-       
+        
+        print("ACTIVE: \(active)")
         setUpView()
-        // Do any additional setup after loading the view.
     }
     
     func setUpView() {
@@ -40,45 +36,41 @@ class BaseWeatherViewController: UIViewController {
         cltvWeather.backgroundColor = .clear
         cltvWeather.allowsSelection = false
         if active > 0 {
-            if !checkSelectUserType(id: active) {
+            if !ManagerLocations.checkSelectUserType(id: active) {
                 myPageControl.isHidden = true
                 btnTabMenu.isHidden = true
             }
             
         }
-        let strings = userDefaults.object(forKey: "myLocation_\(active)") as? [String] ?? []
         myPageControl.currentPage = 0
-        myPageControl.numberOfPages = strings.count
-        
-        requireLocation()
-    }
-    func checkSelectUserType(id: Int) -> Bool {
-        if let data = UserDefaults.standard.data(forKey: "user_\(active)") {
-            do {
-                // Create JSON Decoder
-                let decoder = JSONDecoder()
-                
-                // Decode Note
-                let model = try decoder.decode(ModelSignUp.self, from: data)
-                print("User TYPE: \(model.selectUserTpye)")
-                if model.selectUserTpye == "Normal" {
-                    return false
-                }else {
-                    return true
-                }
-                
-            } catch {
-                print("Unable to Decode Note (\(error))")
-                return false
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+            case .authorizedAlways, .authorizedWhenInUse:
+                deviceLoaction = userDefaults.value(forKey: "deviceLocation") as? String ?? ""
+                print("Access")
+            case .notDetermined:
+                requireLocation()
+                print("NotDEtermine")
+            case .restricted:
+                print("REstriced")
+            case .denied:
+                deviceLoaction = ""
+                print("Denied 1")
+            @unknown default:
+                print("Access")
             }
+        }else {
+            print("Location services are not enabled")
         }
-        return false
+        
+        
     }
+    
     
     
     func requireLocation() {
         self.locationManager.requestAlwaysAuthorization()
-//        self.locationManager.requestAlwaysAuthorization()
+        //        self.locationManager.requestAlwaysAuthorization()
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
@@ -87,9 +79,13 @@ class BaseWeatherViewController: UIViewController {
     }
     func setRootViewController() {
         let st = UIStoryboard.init(name: "Main", bundle: nil)
-        let viewController = st.instantiateViewController(withIdentifier: "navi") as! UINavigationController
-        UIApplication.shared.windows.first?.rootViewController = viewController
-        UIApplication.shared.windows.first?.makeKeyAndVisible()
+        let vc = st.instantiateViewController(withIdentifier: "TabViewController") as! TabViewController
+        var array = self.navigationController?.viewControllers
+        
+        array?.removeAll()
+        
+        array?.append(vc)
+        self.navigationController?.setViewControllers(array!, animated: true)
     }
     
     @IBAction func didTapLogOut(_ sender: Any) {
@@ -122,11 +118,9 @@ extension BaseWeatherViewController: CLLocationManagerDelegate {
             guard let city = city, let country = country, error == nil else {
                 return
             }
-            let str = city.removeSperator()
-            var strings = self.userDefaults.object(forKey: "myLocation_\(self.active)") as? [String] ?? []
-            strings.removeFirst()
-            strings.insert(str, at: 0)
-            self.userDefaults.set(strings, forKey: "myLocation_\(self.active)")
+            let str = city.replaceSpacingToCorrectURLForm()
+            self.userDefaults.set(str, forKey: "deviceLocation")
+            self.deviceLoaction = self.userDefaults.value(forKey: "deviceLocation") as? String ?? ""
             print("\(city), \( country)")
             DispatchQueue.main.async {
                 self.cltvWeather.reloadData()
@@ -134,45 +128,24 @@ extension BaseWeatherViewController: CLLocationManagerDelegate {
             }
         }
     }
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        if let clErr = error as? CLError {
-            switch clErr {
-            case CLError.locationUnknown:
-                print("location unknown")
-            case CLError.denied:
-                print("denied")
-                var strings = userDefaults.object(forKey: "myLocation_\(active)") as? [String] ?? []
-                if strings[0] == "" {
-                    strings.removeFirst()
-                    userDefaults.set(strings, forKey: "myLocation_\(active)")
-                    DispatchQueue.main.async {
-                        self.cltvWeather.reloadData()
-                        self.myPageControl.numberOfPages = strings.count
-                    }
-                }
-                
-            default:
-                print("other Core Location error")
-            }
-        } else {
-            print("other error:", error.localizedDescription)
-        }
-    }
 }
 extension BaseWeatherViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         myPageControl.currentPage = indexPath.row
+        
     }
 }
 extension BaseWeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let stringLocation = userDefaults.object(forKey: "myLocation_\(active)") as? [String] ?? []
+        let stringLocation = ManagerLocations.getArrayLocation(deviceLocations: self.deviceLoaction ?? "", id: active)
+        myPageControl.numberOfPages = stringLocation.count
         return stringLocation.count
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = cltvWeather.dequeueReusableCell(withReuseIdentifier: "ViewWeatherCollectionViewCell", for: indexPath) as! ViewWeatherCollectionViewCell
-        let stringLocation = userDefaults.object(forKey: "myLocation_\(active)") as? [String] ?? []
+        let stringLocation = ManagerLocations.getArrayLocation(deviceLocations: self.deviceLoaction ?? "", id: active)
         cell.requestDataFromApi(city: stringLocation[indexPath.row])
         
         return cell
@@ -184,16 +157,26 @@ extension BaseWeatherViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: self.view.frame.width, height: self.cltvWeather.frame.height)
     }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        var currentPage = Int(scrollView.contentOffset.x/UIScreen.main.bounds.width)
+        let stringLocation = ManagerLocations.getArrayLocation(deviceLocations: self.deviceLoaction ?? "", id: active)
+        currentPage = min(currentPage, stringLocation.count - 1)
+        currentPage = max(currentPage, 0)
+        print("CURRENTPAGE: \(currentPage)")
+
+        
+        myPageControl.currentPage = currentPage
+    }
 }
 
 extension BaseWeatherViewController: TextFieldInputProtocolDelegate {
     func textFieldDidEdit(text: String) {
-        var strings = userDefaults.object(forKey: "myLocation_\(active)") as? [String] ?? []
-        strings.append(text)
-        userDefaults.set(strings,forKey: "myLocation_\(active)")
-        DispatchQueue.main.async {
-            self.myPageControl.numberOfPages = strings.count
-            self.cltvWeather.reloadData()
+        if text != "" {
+            ManagerLocations.addLocationUserDefault(textLocation: text, id: active)
+            DispatchQueue.main.async {
+                self.cltvWeather.reloadData()
+            }
         }
+        
     }
 }

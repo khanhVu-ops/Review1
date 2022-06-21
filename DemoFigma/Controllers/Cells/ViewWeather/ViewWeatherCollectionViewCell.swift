@@ -21,19 +21,11 @@ class ViewWeatherCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var lbNameCity: UILabel!
     @IBOutlet weak var lbDescription: UILabel!
     
-   
-    
-    var locationData: LocationModel?
-    var currentData: CurrentModel?
-    var forecastData: Forecast?
+    var weatherModel: WeatherModel?
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        tbvWeather.backgroundColor = .clear
-        cltvHour.backgroundColor = .clear
-        vTemp.backgroundColor = .clear
-        vCity.backgroundColor = .clear
-        
+       
         setUpView()
     }
     
@@ -50,13 +42,18 @@ class ViewWeatherCollectionViewCell: UICollectionViewCell {
         
         tbvWeather.delegate = self
         tbvWeather.dataSource = self
+        tbvWeather.backgroundColor = .clear
+        cltvHour.backgroundColor = .clear
+        vTemp.backgroundColor = .clear
+        vCity.backgroundColor = .clear
+        
     }
     
     /// Resquest data from Api
     /// - Parameter city: Parameters
     func requestDataFromApi(city: String?) {
         
-        APIUtilities.requestLocationDataJson(city: city, completionHandler: { [weak self] data, error in
+        APIUtilities.requestWeatherDataJson(city: city, completionHandler: { [weak self] data, error in
             guard let self = self else {
                 return
                 
@@ -65,57 +62,24 @@ class ViewWeatherCollectionViewCell: UICollectionViewCell {
                 print("ERRORRR")
                 return
             }
-            self.locationData = data
-            let city = self.locationData?.name ?? ""
+            self.weatherModel = data
+            let city = self.weatherModel?.location?.name ?? ""
             self.lbNameCity.text = city
-            print("DATA: \(String(describing: self.locationData?.name)))")
-            DispatchQueue.main.async {
-                self.tbvWeather.reloadData()
-                self.cltvHour.reloadData()
-            }
-        })
-        APIUtilities.requestCurrentDataJson(city: city, completionHandler: { [weak self] data, error in
-            guard let self = self else {
-                return
-                
-            }
-            guard let data = data, error == nil else {
-                print("ERRORRR")
-                return
-            }
-            self.currentData = data
-            let description = self.currentData?.condition?.text ?? ""
+            let description = self.weatherModel?.current?.condition?.text ?? ""
             self.lbDescription.text = description
-            
-            print("CURRENT DATA: \(String(describing: self.currentData?.last_updated))")
-            DispatchQueue.main.async {
-                self.tbvWeather.reloadData()
-                self.cltvHour.reloadData()
-            }
-        })
-        APIUtilities.requestForeCastDataJson(city: city, completionHandler: { [weak self] data, error in
-            guard let self = self else {
-                return
-
-            }
-            guard let data = data, error == nil else {
-                print("ERRORRR")
-                return
-            }
-            self.forecastData = data
-            let day = self.forecastData?.forecastday?[0].date ?? ""
-            let temp_max = self.forecastData?.forecastday?[0].day?.maxtemp_c ?? 0
-            let temp_min = self.forecastData?.forecastday?[0].day?.mintemp_c ?? 0
+            let day = self.weatherModel?.forecast?.forecastday?[0].date ?? ""
+            let temp_max = self.weatherModel?.forecast?.forecastday?[0].day?.maxtemp_c ?? 0
+            let temp_min = self.weatherModel?.forecast?.forecastday?[0].day?.mintemp_c ?? 0
             self.lbDay.text = Utilities.changeDate(day, dateFormat: "yyyy-MM-dd", format: "EEEE")
             self.lbTempMax.text = "\(Int(temp_max))"
             self.lbTempMin.text = "\(Int(temp_min))"
-            print("CURRENT DATA: \(String(describing: self.forecastData?.forecastday?[0].date))")
+            print("DATA: \(String(describing: self.weatherModel?.location?.country)))")
             DispatchQueue.main.async {
                 self.tbvWeather.reloadData()
                 self.cltvHour.reloadData()
             }
         })
-        
+      
     }
     
     /// Get index current hour 
@@ -146,7 +110,7 @@ extension ViewWeatherCollectionViewCell: UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return forecastData?.forecastday?.count ?? 0
+            return weatherModel?.forecast?.forecastday?.count ?? 0
         }else if section == 1 {
             return 1
         }else if section == 2 {
@@ -161,7 +125,7 @@ extension ViewWeatherCollectionViewCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tbvWeather.dequeueReusableCell(withIdentifier: "WeatherTableViewCell", for: indexPath) as! WeatherTableViewCell
-            if let foreCast = forecastData {
+            if let foreCast = weatherModel?.forecast {
                 cell.configure(data: foreCast, index: indexPath.row)
             }
             tbvWeather.separatorStyle = .none
@@ -169,14 +133,14 @@ extension ViewWeatherCollectionViewCell: UITableViewDataSource {
             
         }else if indexPath.section == 1{
             let cell = tbvWeather.dequeueReusableCell(withIdentifier: "DescriptionTableViewCell") as! DescriptionTableViewCell
-            if let current = currentData {
+            if let current = weatherModel?.current {
                 cell.configure(data: current)
             }
             
             return cell
         }else {
             let cell = tbvWeather.dequeueReusableCell(withIdentifier: "CurrentTableViewCell", for: indexPath) as! CurrentTableViewCell
-            if let current = currentData, let forecast = forecastData {
+            if let current = weatherModel?.current, let forecast = weatherModel?.forecast {
                 switch indexPath.row {
                 case 0:
                     cell.vLine.isHidden = true
@@ -200,12 +164,12 @@ extension ViewWeatherCollectionViewCell: UITableViewDataSource {
     
 }
 extension ViewWeatherCollectionViewCell: UITableViewDelegate {
-
+    
 }
 extension ViewWeatherCollectionViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if forecastData?.forecastday?.count ?? 0 > 0 {
-            return forecastData?.forecastday?[0].hour?.count ?? 0
+        if weatherModel?.forecast?.forecastday?.count ?? 0 > 0 {
+            return weatherModel?.forecast?.forecastday?[0].hour?.count ?? 0
         }else {
             return 0
         }
@@ -214,10 +178,10 @@ extension ViewWeatherCollectionViewCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = cltvHour.dequeueReusableCell(withReuseIdentifier: "HourCollectionViewCell", for: indexPath) as! HourCollectionViewCell
-        let indexHour = getIndexNextHour(forecast: forecastData, location: locationData)
-        let temp = forecastData?.forecastday?[0].hour?[indexHour].temp_c ?? 0
+        let indexHour = getIndexNextHour(forecast: weatherModel?.forecast, location: weatherModel?.location)
+        let temp = weatherModel?.forecast?.forecastday?[0].hour?[indexHour].temp_c ?? 0
         lbTempAvg.text = "\(Int(temp))°"
-        cell.configure(data: forecastData,indexRow: indexPath.row, hour: indexHour)
+        cell.configure(data: weatherModel?.forecast, indexRow: indexPath.row, hour: indexHour)
         return cell
     }
     

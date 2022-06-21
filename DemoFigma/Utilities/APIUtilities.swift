@@ -13,54 +13,43 @@ protocol JsonInitObject: NSObject {
 }
 
 final class APIUtilities {
-    static let domain = "https://api.weatherapi.com/v1/forecast.json?"
+    static let domain = "https://api.weatherapi.com/v1/"
+    static let APIKEY = "ad8b7cbb8f754fbd9be55553220806"
     static let responeLocationKey = "location"
     static let responseCurrentKey = "current"
     static let responseForecastKey = "forecast"
     
-    static func requestLocationDataJson(city: String?, completionHandler: ((LocationModel?, APIError?) -> Void)?) {
+    static func requestWeatherDataJson(city: String?, completionHandler: ((WeatherModel?, APIError?) -> Void)?) {
         guard  let city = city else {
             return
         }
-        let tailStrURL = "key=ad8b7cbb8f754fbd9be55553220806&q=\(city)&days=9"
+        let tailStrURL = "forecast.json?key=\(APIKEY)&q=\(city)&days=9"
         print("CITY: \(String(describing: city))")
-        jsonResponseObject(tailStrURL: tailStrURL, method: .get, headers: [:], responeKey: responeLocationKey, completionHandler: completionHandler)
-    }
-    static func requestCurrentDataJson(city: String?, completionHandler: ((CurrentModel?, APIError?) -> Void)?) {
-        guard  let city = city else {
-            return
-        }
-        let tailStrURL = "key=ad8b7cbb8f754fbd9be55553220806&q=\(city)&days=9"
-        
-        jsonResponseObject(tailStrURL: tailStrURL, method: .get, headers: [:], responeKey: responseCurrentKey, completionHandler: completionHandler)
-    }
-    static func requestForeCastDataJson(city: String?, completionHandler: ((Forecast?, APIError?) -> Void)?) {
-        guard  let city = city else {
-            return
-        }
-        let tailStrURL = "key=ad8b7cbb8f754fbd9be55553220806&q=\(city)&days=9"
-        
-        jsonResponseObject(tailStrURL: tailStrURL, method: .get, headers: [:], responeKey: responseForecastKey, completionHandler: completionHandler)
+        print("URL: \(domain + tailStrURL)")
+        jsonResponseObject(tailStrURL: tailStrURL, method: .get, headers: [:], completionHandler: completionHandler)
     }
     
+    static func requestSuggestLocation(text: String?, completionHandler: (([NameCityModel]?, APIError?) -> Void)?) {
+        guard  let text = text else {
+            return
+        }
+        print("TEXTTTT: \(String(describing: text))")
+        let tailUrl = "search.json?key=\(APIKEY)&q=\(text)"
+        print("URL: \(domain + tailUrl)")
+        jsonResponseObjectLoction(tailStrURL: tailUrl, method: .get, headers: [:], completionHandler: completionHandler)
+    }
+
     //MARK: BASE
     
-    static private func jsonResponseObject<T: JsonInitObject>(tailStrURL: String, method: HTTPMethod, headers: HTTPHeaders, responeKey: String, completionHandler: ((T?, APIError?) -> Void)?) {
+    static private func jsonResponseObject<T: JsonInitObject>(tailStrURL: String, method: HTTPMethod, headers: HTTPHeaders, completionHandler: ((T?, APIError?) -> Void)?) {
         
         jsonResponse(tailStrURL: tailStrURL, isPublicAPI: false, method: method, headers: headers) { response in
             
             switch response.result {
             case .success(let value):
-                //                guard serverCode == 200 else {
-                //                    completionHandler?(nil, .serverError(serverCode, serverMessage))
-                //                    return
-                //                }
-                
-                guard let responseDict = value as? [String: Any] else {
-                    return
-                }
-                if let dataLocation = responseDict[responeKey] as? [String: Any] {
-                    let obj = T(json: dataLocation)
+              
+                if let dataLocation = value as? [String : Any] {
+                    let obj = T(json: dataLocation )
                     completionHandler?(obj,nil)
                 } else {
                     completionHandler?(nil, .resposeFormatError)
@@ -78,6 +67,33 @@ final class APIUtilities {
         }
     }
     
+    static private func jsonResponseObjectLoction<T: JsonInitObject>(tailStrURL: String, method: HTTPMethod, headers: HTTPHeaders, completionHandler: (([T]?, APIError?) -> Void)?) {
+        
+        jsonResponse(tailStrURL: tailStrURL, isPublicAPI: false, method: method, headers: headers) { response in
+            
+            switch response.result {
+            case .success(let value):
+              
+                guard let dataLocation = value as? [[String : Any]] else {
+                    completionHandler?(nil, .resposeFormatError)
+                    return
+                }
+                
+                var listObj: [T] = []
+                
+                for item in dataLocation {
+                    let obj = T(json: item)
+                    listObj.append(obj)
+                }
+                
+                completionHandler?(listObj, nil)
+                
+            case .failure(let error):
+                completionHandler?(nil, .unowned(error))
+            }
+        }
+    }
+    
     static private func jsonResponse(tailStrURL: String,
                                      isPublicAPI: Bool,
                                      method: HTTPMethod,
@@ -86,7 +102,10 @@ final class APIUtilities {
                                      headers: HTTPHeaders = [:],
                                      completionHandler: ((AFDataResponse<Any>) -> Void)?) {
         
-        guard let url = URL(string: domain + tailStrURL) else { return }
+        guard let url = URL(string: domain + tailStrURL) else {
+            return
+            
+        }
         AF.request(url, method: method, parameters: parameters, encoding: encoding, headers: headers)
             .responseJSON { response in
                 

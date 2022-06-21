@@ -84,9 +84,13 @@ class ViewBtnSubmitTableViewCell: UITableViewCell {
     }
     func setRootViewController() {
         let st = UIStoryboard.init(name: "Main", bundle: nil)
-        let viewController = st.instantiateViewController(withIdentifier: "navi2") as! UINavigationController
-        UIApplication.shared.windows.first?.rootViewController = viewController
-        UIApplication.shared.windows.first?.makeKeyAndVisible()
+        let vc = st.instantiateViewController(withIdentifier: "BaseWeatherViewController")
+        var array = controller.navigationController?.viewControllers
+        
+        array?.removeAll()
+        
+        array?.append(vc)
+        controller.navigationController?.setViewControllers(array!, animated: true)
     }
     
     @IBAction func didTapBtnSubmit(_ sender: Any) {

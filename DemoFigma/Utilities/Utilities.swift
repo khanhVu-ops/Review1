@@ -32,10 +32,22 @@ class Utilities {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = DateFormatter.Style.long
         dateFormatter.dateFormat = dateFormat
-        let convertedDate = dateFormatter.date(from: mydate)
+        guard let convertedDate = dateFormatter.date(from: mydate) else {
+            return ""
+        }
         dateFormatter.dateFormat = format
-        let date = dateFormatter.string(from: convertedDate!)
+        let date = dateFormatter.string(from: convertedDate)
         return date
+    }
+    
+    static func setRootViewController(controller: UIViewController, to destination: UIViewController) {
+        var array = controller.navigationController?.viewControllers
+        
+        array?.removeAll()
+        
+        array?.append(destination)
+        controller.navigationController?.setViewControllers(array!, animated: true)
+        
     }
     
 

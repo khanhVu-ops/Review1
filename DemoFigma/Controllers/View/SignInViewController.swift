@@ -33,20 +33,12 @@ class SignInViewController: UIViewController {
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(view.endEditing(_:))))
 
-        if let check = UserDefaults.standard.value(forKey: "active") as? Int{
-            print("Current: \(check)")
-            if check != 0 {
-                setRootViewController()
-            }
-            
-        } else {
-            UserDefaults.standard.setValue(0, forKey: "active")
-        }
         setUpUI()
         tfPassword.delegate = self
         tfEmail.delegate = self
         
     }
+    
     func setUpUI() {
         let attributeString = NSMutableAttributedString(
             string: "SIGN OUT",
@@ -99,17 +91,25 @@ class SignInViewController: UIViewController {
         
         // add an action (button)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-        
+    
         // show the alert
         self.present(alert, animated: true, completion: nil)
     }
     
     func setRootViewController() {
         let st = UIStoryboard.init(name: "Main", bundle: nil)
-        let viewController = st.instantiateViewController(withIdentifier: "navi2") as! UINavigationController
-        UIApplication.shared.windows.first?.rootViewController = viewController
-        UIApplication.shared.windows.first?.makeKeyAndVisible()
+        let vc = st.instantiateViewController(withIdentifier: "BaseWeatherViewController")
         
+//        var array = self.navigationController?.viewControllers
+//        print("COUNT: \(String(describing: array?.count))")
+////        array?.removeAll()
+//        print("COUNT: \(String(describing: array?.count))")
+//        array?.append(vc)
+//        print("COUNT: \(String(describing: array?.count))")
+//
+        self.navigationController?.setViewControllers([vc], animated: true)
+        let array = self.navigationController?.viewControllers
+        print("COUNT: \(String(describing: array?.count))")
     }
     
     @IBAction func didTapBtnSignIn(_ sender: Any) {

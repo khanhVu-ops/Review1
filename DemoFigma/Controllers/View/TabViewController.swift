@@ -14,11 +14,24 @@ class TabViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let codeSegmented = CustomSegmentedControl(frame: CGRect(x: 0, y: 50, width: self.view.frame.width, height: 50), buttonTitle: ["Sign In", "Sign Out"])
+        if let check = UserDefaults.standard.value(forKey: "active") as? Int{
+            print("Current: \(check)")
+            if check != 0 {
+                setRootViewController()
+                
+            }
+            
+        } else {
+            UserDefaults.standard.setValue(0, forKey: "active")
+        }
+        let codeSegmented = CustomSegmentedControl(frame: CGRect(x: 0, y: 50, width: self.view.frame.width, height: 50), buttonTitle: ["Sign In", "Sign Up"])
         codeSegmented.backgroundColor = .clear
         view.addSubview(codeSegmented)
         codeSegmented.delegate = self
         
+        for child in children {
+            child.didMove(toParent: self)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -30,7 +43,21 @@ class TabViewController: UIViewController {
         })
     }
     
-    
+    func setRootViewController() {
+        let st = UIStoryboard.init(name: "Main", bundle: nil)
+        let vc = st.instantiateViewController(withIdentifier: "BaseWeatherViewController")
+        
+//        var array = self.navigationController?.viewControllers
+//        print("COUNT: \(String(describing: array?.count))")
+////        array?.removeAll()
+//        print("COUNT: \(String(describing: array?.count))")
+//        array?.append(vc)
+//        print("COUNT: \(String(describing: array?.count))")
+//
+        self.navigationController?.setViewControllers([vc], animated: true)
+        let array = self.navigationController?.viewControllers
+        print("COUNT: \(String(describing: array?.count))")
+    }
     
     @IBAction func didTapSegmentControl(sender: UISegmentedControl) {
         
