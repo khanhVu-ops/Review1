@@ -141,7 +141,7 @@ class ViewBtnSubmitTableViewCell: UITableViewCell {
                     print("User cancelled login")
                     return
                 }
-                let id = AccessToken.current?.userID ?? ""
+//                let id = AccessToken.current?.userID ?? ""
                 UserDefaults.standard.setValue(-2, forKey: "active")
                 // Login successfully
                 self?.setRootViewController()

@@ -32,7 +32,6 @@ class WeatherTableViewCell: UITableViewCell {
         let date = data.forecastday?[index].date ?? ""
         let img = data.forecastday?[index].day?.condition?.icon ?? ""
         let imgStr = "https:"+img
-        
         imgWeather.sd_setImage(with: URL(string: imgStr), placeholderImage: UIImage(named: "PlaceHolder"))
         lbName.text = Utilities.changeDate(date,dateFormat: "yyyy-MM-dd", format: "EEEE")
         lbTempMax.text = "\(Int(tempMax))"

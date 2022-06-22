@@ -106,6 +106,7 @@ class BaseWeatherViewController: UIViewController {
         let vc = st.instantiateViewController(withIdentifier: "InputLocationViewController") as! InputLocationViewController
         vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)
+        
     }
     
 }
