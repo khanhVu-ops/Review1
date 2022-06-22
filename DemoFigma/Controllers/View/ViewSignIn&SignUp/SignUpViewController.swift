@@ -17,6 +17,7 @@ class SignUpViewController: UIViewController {
     let arrayPlaceHolder = ["First Name", "Last Name", "Select User Type", "E-mail Address", "Password"]
     
     var widthDevice: Float?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if let token = AccessToken.current,!token.isExpired {
@@ -36,6 +37,7 @@ class SignUpViewController: UIViewController {
         // Register Cell
         myTableView.register(UINib(nibName: "ViewTextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "ViewTextFieldTableViewCell")
         myTableView.register(UINib(nibName: "ViewBtnSubmitTableViewCell", bundle: nil), forCellReuseIdentifier: "ViewBtnSubmitTableViewCell")
+        
     }
     override func viewWillLayoutSubviews() {
         widthDevice = Float(self.view.frame.width)
@@ -69,6 +71,9 @@ extension SignUpViewController: UITableViewDataSource {
             cell.controller = self
             if indexPath.row == 2 {
                 cell.addBtnPopover(width: widthDevice)
+            }else if indexPath.row == 4 {
+                cell.setSecureTextEntry(isSecure: true)
+                cell.addBtnShowPassword(width: widthDevice)
             }
         }
         else if indexPath.row == 5 {

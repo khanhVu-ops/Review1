@@ -13,23 +13,25 @@ protocol TextFieldInputProtocolDelegate {
 
 class InputLocationViewController: UIViewController {
 
+    @IBOutlet weak var vEnter: UIView!
     @IBOutlet weak var tfEnter: UITextField!
     @IBOutlet weak var tbvSuggestion: UITableView!
     
     var delegate: TextFieldInputProtocolDelegate?
     var dataCity: [NameCityModel]?
-//    var weatherModel: WeatherModel?
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tfEnter.delegate = self
         tbvSuggestion.dataSource = self
         tbvSuggestion.delegate = self
-        
         tbvSuggestion.register(UINib(nibName: "SuggestionTableViewCell", bundle: nil), forCellReuseIdentifier: "SuggestionTableViewCell")
+        
         tbvSuggestion.isHidden = true
+        tbvSuggestion.backgroundColor = .clear
         tfEnter.becomeFirstResponder()
-//        requestApi(text: "thanh hoa")
+        tfEnter.layer.cornerRadius = 10
+        vEnter.layer.cornerRadius = 15
         
         // Do any additional setup after loading the view.
     }
@@ -44,7 +46,10 @@ class InputLocationViewController: UIViewController {
                 return
             }
             self.dataCity = data
-//            print("AAAAA: \(String(describing: self.dataCity?[0].name))")
+            self.tbvSuggestion.isHidden = false
+            DispatchQueue.main.async {
+                self.tbvSuggestion.reloadData()
+            }
         }
        
     }
@@ -68,12 +73,9 @@ extension InputLocationViewController: UITextFieldDelegate {
         var textInput = text + string
         textInput = textInput.replaceSpacingToCorrectURLForm()
         print("TEXT: \(textInput)")
-        if textInput.count > 1 {
+        if textInput.count >= 0 {
             requestApi(text: textInput)
-            tbvSuggestion.isHidden = false
-            DispatchQueue.main.async {
-                self.tbvSuggestion.reloadData()
-            }
+            
         }
         
         return true
@@ -95,13 +97,19 @@ extension InputLocationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tbvSuggestion.dequeueReusableCell(withIdentifier: "SuggestionTableViewCell", for: indexPath) as! SuggestionTableViewCell
-        cell.configure(data: dataCity?[indexPath.row])
+        if let dataCity = dataCity {
+            cell.configure(data: dataCity[indexPath.row])
+        } 
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard  let name = dataCity?[indexPath.row].name,
-               let country = dataCity?[indexPath.row].country else {
+        guard let dataCity = dataCity else {
+            return
+        }
+        guard  let name = dataCity[indexPath.row].name,
+               let country = dataCity[indexPath.row].country else {
             return
         }
         let text = name + ", " + country + "."

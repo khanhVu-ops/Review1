@@ -12,6 +12,7 @@ class SuggestionTableViewCell: UITableViewCell {
     @IBOutlet weak var lbSuggestion: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.backgroundColor = .clear
         // Initialization code
     }
 

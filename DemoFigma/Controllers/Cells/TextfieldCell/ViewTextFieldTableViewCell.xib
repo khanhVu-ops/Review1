@@ -19,10 +19,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rot-u5-jcN">
-                        <rect key="frame" x="20" y="10" width="285" height="60"/>
+                        <rect key="frame" x="20" y="0.0" width="285" height="50"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="First Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XGM-NX-otr">
-                                <rect key="frame" x="20" y="0.0" width="265" height="60"/>
+                                <rect key="frame" x="20" y="0.0" width="265" height="50"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -32,20 +32,34 @@
                             <constraint firstAttribute="trailing" secondItem="XGM-NX-otr" secondAttribute="trailing" id="6tl-QL-lJs"/>
                             <constraint firstAttribute="bottom" secondItem="XGM-NX-otr" secondAttribute="bottom" id="A88-4U-yTF"/>
                             <constraint firstItem="XGM-NX-otr" firstAttribute="top" secondItem="rot-u5-jcN" secondAttribute="top" id="JjF-tc-VOK"/>
-                            <constraint firstAttribute="height" constant="60" id="Kl3-PM-eRh"/>
+                            <constraint firstAttribute="height" constant="50" id="Kl3-PM-eRh"/>
                             <constraint firstItem="XGM-NX-otr" firstAttribute="leading" secondItem="rot-u5-jcN" secondAttribute="leading" constant="20" id="S3C-yG-FXp"/>
                         </constraints>
                     </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="Xfc-zX-lL5">
+                        <rect key="frame" x="40" y="58" width="275" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="SAL-DC-ddo"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                        <color key="textColor" systemColor="systemRedColor"/>
+                        <nil key="highlightedColor"/>
+                        <size key="shadowOffset" width="0.0" height="0.0"/>
+                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="rot-u5-jcN" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="Eyj-CT-7yf"/>
+                    <constraint firstItem="Xfc-zX-lL5" firstAttribute="top" secondItem="rot-u5-jcN" secondAttribute="bottom" constant="8" id="1Q9-W8-8ZZ"/>
+                    <constraint firstItem="rot-u5-jcN" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Eyj-CT-7yf"/>
                     <constraint firstAttribute="trailing" secondItem="rot-u5-jcN" secondAttribute="trailing" constant="20" id="MIc-2b-k1e"/>
-                    <constraint firstAttribute="bottom" secondItem="rot-u5-jcN" secondAttribute="bottom" constant="10" id="kWS-VU-meq"/>
+                    <constraint firstAttribute="bottom" secondItem="Xfc-zX-lL5" secondAttribute="bottom" id="U78-9P-LDP"/>
+                    <constraint firstAttribute="trailing" secondItem="Xfc-zX-lL5" secondAttribute="trailing" constant="10" id="dOo-ol-U6D"/>
+                    <constraint firstItem="Xfc-zX-lL5" firstAttribute="leading" secondItem="XGM-NX-otr" secondAttribute="leading" id="uDo-09-pTE"/>
                     <constraint firstItem="rot-u5-jcN" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="uai-wp-QLv"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="lbError" destination="Xfc-zX-lL5" id="xpT-Xe-4VK"/>
                 <outlet property="tfEnter" destination="XGM-NX-otr" id="t6p-p9-IVb"/>
                 <outlet property="vBorderTf" destination="rot-u5-jcN" id="gOs-Fn-khM"/>
             </connections>
@@ -55,6 +69,9 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

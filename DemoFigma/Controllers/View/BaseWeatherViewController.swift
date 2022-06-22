@@ -36,7 +36,7 @@ class BaseWeatherViewController: UIViewController {
         cltvWeather.backgroundColor = .clear
         cltvWeather.allowsSelection = false
         if active > 0 {
-            if !ManagerLocations.checkSelectUserType(id: active) {
+            if !ManagerUserDefault.checkSelectUserType(id: active) {
                 myPageControl.isHidden = true
                 btnTabMenu.isHidden = true
             }
@@ -121,6 +121,7 @@ extension BaseWeatherViewController: CLLocationManagerDelegate {
             let str = city.replaceSpacingToCorrectURLForm()
             self.userDefaults.set(str, forKey: "deviceLocation")
             self.deviceLoaction = self.userDefaults.value(forKey: "deviceLocation") as? String ?? ""
+            
             print("\(city), \( country)")
             DispatchQueue.main.async {
                 self.cltvWeather.reloadData()
@@ -137,7 +138,7 @@ extension BaseWeatherViewController: UICollectionViewDelegate {
 }
 extension BaseWeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let stringLocation = ManagerLocations.getArrayLocation(deviceLocations: self.deviceLoaction ?? "", id: active)
+        let stringLocation = ManagerUserDefault.getArrayLocation(deviceLocations: self.deviceLoaction ?? "", id: active)
         myPageControl.numberOfPages = stringLocation.count
         return stringLocation.count
         
@@ -145,7 +146,7 @@ extension BaseWeatherViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = cltvWeather.dequeueReusableCell(withReuseIdentifier: "ViewWeatherCollectionViewCell", for: indexPath) as! ViewWeatherCollectionViewCell
-        let stringLocation = ManagerLocations.getArrayLocation(deviceLocations: self.deviceLoaction ?? "", id: active)
+        let stringLocation = ManagerUserDefault.getArrayLocation(deviceLocations: self.deviceLoaction ?? "", id: active)
         cell.requestDataFromApi(city: stringLocation[indexPath.row])
         
         return cell
@@ -159,7 +160,7 @@ extension BaseWeatherViewController: UICollectionViewDelegateFlowLayout {
     }
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         var currentPage = Int(scrollView.contentOffset.x/UIScreen.main.bounds.width)
-        let stringLocation = ManagerLocations.getArrayLocation(deviceLocations: self.deviceLoaction ?? "", id: active)
+        let stringLocation = ManagerUserDefault.getArrayLocation(deviceLocations: self.deviceLoaction ?? "", id: active)
         currentPage = min(currentPage, stringLocation.count - 1)
         currentPage = max(currentPage, 0)
         print("CURRENTPAGE: \(currentPage)")
@@ -172,7 +173,7 @@ extension BaseWeatherViewController: UICollectionViewDelegateFlowLayout {
 extension BaseWeatherViewController: TextFieldInputProtocolDelegate {
     func textFieldDidEdit(text: String) {
         if text != "" {
-            ManagerLocations.addLocationUserDefault(textLocation: text, id: active)
+            ManagerUserDefault.addLocationUserDefault(textLocation: text, id: active)
             DispatchQueue.main.async {
                 self.cltvWeather.reloadData()
             }

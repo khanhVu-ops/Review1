@@ -11,6 +11,7 @@ import UIKit
 class SignInViewController: UIViewController {
     
     @IBOutlet weak var tfEmail: UITextField!
+    @IBOutlet weak var btnShowPassword: UIButton!
     @IBOutlet weak var tfPassword: UITextField!
     
     @IBOutlet weak var vEmail: UIView!
@@ -36,6 +37,7 @@ class SignInViewController: UIViewController {
         setUpUI()
         tfPassword.delegate = self
         tfEmail.delegate = self
+        tfPassword.isSecureTextEntry = true
         
     }
     
@@ -50,6 +52,7 @@ class SignInViewController: UIViewController {
         btnSignIn.layer.shadowOffset = CGSize(width: 0, height: 4)
         btnSignIn.layer.shadowColor = UIColor.gray.cgColor
         btnSignIn.layer.shadowOpacity = 0.3
+        btnShowPassword.isHidden = true
         
         setBorderTF(vBorderTf: vEmail)
         setBorderTF(vBorderTf: vPassword)
@@ -61,29 +64,6 @@ class SignInViewController: UIViewController {
         vBorderTf.layer.shadowOffset = CGSize(width: 0, height: 4)
         vBorderTf.layer.shadowOpacity = 0.3
         vBorderTf.layer.shadowColor = UIColor.gray.cgColor
-    }
-    
-    func getDataUserDefault(id: Int, email: String, password: String) -> Bool {
-        if let data = UserDefaults.standard.data(forKey: "user_\(id)") {
-            do {
-                // Create JSON Decoder
-                let decoder = JSONDecoder()
-                
-                // Decode Note
-                let model = try decoder.decode(ModelSignUp.self, from: data)
-                print("first Name: \(model.firstName)")
-                if model.emailAddress == email, model.password == password {
-                    return true
-                }else {
-                    return false
-                }
-                
-            } catch {
-                print("Unable to Decode Note (\(error))")
-                return false
-            }
-        }
-        return false
     }
     
     func showAlert() {
@@ -99,17 +79,26 @@ class SignInViewController: UIViewController {
     func setRootViewController() {
         let st = UIStoryboard.init(name: "Main", bundle: nil)
         let vc = st.instantiateViewController(withIdentifier: "BaseWeatherViewController")
-        
-//        var array = self.navigationController?.viewControllers
-//        print("COUNT: \(String(describing: array?.count))")
-////        array?.removeAll()
-//        print("COUNT: \(String(describing: array?.count))")
-//        array?.append(vc)
-//        print("COUNT: \(String(describing: array?.count))")
-//
         self.navigationController?.setViewControllers([vc], animated: true)
         let array = self.navigationController?.viewControllers
         print("COUNT: \(String(describing: array?.count))")
+    }
+    
+    func checkUserAccount(id: Int, email: String, password: String) -> Bool {
+        var check = false
+        ManagerUserDefault.getDataObjectUserDefault(id: id) { (data, error) in
+            guard let data = data, error == nil else {
+                return
+            }
+            if data.emailAddress == email, data.password == password {
+                check = true
+            }
+            
+        }
+        if check {
+            return true
+        }
+        return false
     }
     
     @IBAction func didTapBtnSignIn(_ sender: Any) {
@@ -124,7 +113,7 @@ class SignInViewController: UIViewController {
         }
         var checkSuccessfull = false
         for i in 0...id {
-            if getDataUserDefault(id: i, email: stEmail, password: stPassword) {
+            if checkUserAccount(id: i, email: stEmail, password: stPassword) {
                 print("Login Succesfully")
                 print("I: \(i)")
                 checkSuccessfull = true
@@ -140,6 +129,9 @@ class SignInViewController: UIViewController {
         
     }
     
+    @IBAction func didTapBtnShowPassword(_ sender: Any) {
+        tfPassword.isSecureTextEntry = !tfPassword.isSecureTextEntry
+    }
     @IBAction func didTapBtnSignUp(_ sender: UIButton) {
         
         
@@ -147,6 +139,14 @@ class SignInViewController: UIViewController {
     
 }
 extension SignInViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == tfPassword {
+            btnShowPassword.isHidden = false
+        }
+       
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == tfEmail {
             guard let str = textField.text else {
@@ -158,8 +158,10 @@ extension SignInViewController: UITextFieldDelegate {
                 return
             }
             stPassword = str
+            btnShowPassword.isHidden = true
         }
     }
+    
     
 }
 

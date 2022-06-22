@@ -24,6 +24,7 @@ class TabViewController: UIViewController {
         } else {
             UserDefaults.standard.setValue(0, forKey: "active")
         }
+        
         let codeSegmented = CustomSegmentedControl(frame: CGRect(x: 0, y: 50, width: self.view.frame.width, height: 50), buttonTitle: ["Sign In", "Sign Up"])
         codeSegmented.backgroundColor = .clear
         view.addSubview(codeSegmented)
